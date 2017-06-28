@@ -1,7 +1,7 @@
 # Work at Olist
 
 Olist is a company that offers an integration platform for sellers and
-marketplaces allowing them to sell their products across multiple channels.
+marketplaces allowing the former to sell their products across multiple channels.
 
 The Olist development team consists of developers who love what they do. Our
 agile development processes and our search for the best development practices
@@ -28,23 +28,22 @@ tree of products' categories.
 2. Follow the instructions of `README.md`.
 3. Deploy you project on [Heroku](https://heroku.com).
 4. Apply for the position at our [career page](http://bit.ly/olist-webdev) and send:
-  - Link to the fork on Github (or [bitbucket.org](https://bitbucket.org)) .
+  - Link to the fork on GitHub (or [bitbucket.org](https://bitbucket.org)) .
   - Link to the project in [Heroku](https://heroku.com).
-  - Brief description of the work environment used to run this project
+  - Brief description of the work environment used to develop this project
     (Computer/operating system, text editor/IDE, libraries, etc.).
 
 
 ## Specification
 
 As we already said, Olist is a company that provides a platform to integrate
-Sellers and Channels (eg. marketplaces).
+sellers and channels (eg. marketplaces).
 
-One of our services allows Sellers to publish their products in channels. All
-published products need to be categorized in one of channels' categories.
+One of our services allows sellers to publish their products in channels. All
+published products need to be categorized in one of the channels' categories.
 
-All channels group the products published in categories that are arranged as a
-tree of *varying depths* (from 1 to infinite levels of hierarchy). See version
-an small example below:
+All channels group the published products in categories that are arranged as a
+tree of *varying depths* (from 1 to infinite levels of hierarchy). The list below exemplifies the categories tree:
 
 - Books
   - National Literature
@@ -71,8 +70,7 @@ an small example below:
   - Desktop
 - :
 
-Each channel sends us a CSV file where one of the columns (`Category`) is
-contains the full category's path:
+Each channel sends us a CSV file where one of the columns (`Category`) contains the full category's path:
 
 ```
 Category
