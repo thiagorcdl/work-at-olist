@@ -5,6 +5,12 @@ class Channel(models.Model):
     """The media where products are published"""
     name = models.CharField(max_length=64)
 
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.__unicode__()
+
 
 class Category(models.Model):
     """A self-referencing model that represents a product's category or subcategory"""
@@ -12,13 +18,8 @@ class Category(models.Model):
     parent = models.ForeignKey('self', null=True, blank=True)
     name = models.CharField(max_length=64)
 
+    def __unicode__(self):
+        return u'(%s) %s' % (self.channel, self.name)
 
-class Seller(models.Model):
-    """The users who are publishing products"""
-    name = models.CharField(max_length=64)
-
-
-class Product(models.Model):
-    """The object on sale"""
-    category = models.ForeignKey(Category)
-    name = models.CharField(max_length=64)
+    def __str__(self):
+        return self.__unicode__()
