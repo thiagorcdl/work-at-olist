@@ -1,1 +1,2 @@
 -r production.txt
+django-extensions==1.7.9
