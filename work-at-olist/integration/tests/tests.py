@@ -5,11 +5,11 @@ from integration.models import Channel, Category
 
 
 class ImportCategoriesTestCase(TestCase):
-    def test_mycommand(self):
+    def test_created_objects(self):
         """
         Asserts the correct amount of created objects.
 
-        Multiple kinds of tests ar used:
+        Multiple kinds of tests are used:
             running normally, repeating the same command, using a file with repeating rows and
             using a file with categories in a random order
         """
