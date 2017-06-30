@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'integration',
+    'api',
 ]
 
 MIDDLEWARE_CLASSES = [
