@@ -10,7 +10,8 @@ class Command(BaseCommand):
 
     def add_categories(self, channel, parent, children, ancestors):
         """
-        Recursive function responsible for creating new categories and setting their parent category.
+        Recursive function responsible for creating new categories and setting
+        their parent category.
 
         :param channel: <integration.models.Channel> object
         :param parent: <integration.models.Category> object
@@ -22,11 +23,14 @@ class Command(BaseCommand):
         for category_name in children:
             references = delimiter.join([ancestors, category_name])
             category = Category.objects.create(channel=channel, parent=parent,
-                                               reference=slugify(references), name=category_name)
+                                               reference=slugify(references),
+                                               name=category_name)
             print(u'# Creating category %s' % category_name)
 
             # Call recursion using current category as parent
-            self.add_categories(channel, parent=category, children=children[category_name], ancestors=references)
+            self.add_categories(channel, parent=category,
+                                children=children[category_name],
+                                ancestors=references)
 
     def add_arguments(self, parser):
         """Specifies the command parameters"""
@@ -39,11 +43,14 @@ class Command(BaseCommand):
 
         # Get or create given channel
         channel_name = kwargs.get('channel')
-        channel, created = Channel.objects.get_or_create(name=channel_name, reference=slugify(channel_name))
+        slug = slugify(channel_name)
+        channel, created = Channel.objects.get_or_create(name=channel_name,
+                                                         reference=slug)
         if created:
             print(u'# Creating new channel "%s"' % channel_name)
         else:
-            print(u'# Performing full update on all of %s\'s categories' % channel_name)
+            print(u'# Performing full update on all of '
+                  u'%s\'s categories' % channel_name)
             Category.objects.filter(channel=channel).delete()
 
         # Open CSV file as dictionary
@@ -51,7 +58,8 @@ class Command(BaseCommand):
         try:
             dictlines = csv.DictReader(open(file_path))
         except TypeError:
-            raise TypeError(u'Failed to open CSV file. Please inform a valid path.')
+            raise TypeError(
+                u'Failed to open CSV file. Please inform a valid path.')
         for line in dictlines:
             # Acquire category path for each entry
             try:
@@ -64,4 +72,5 @@ class Command(BaseCommand):
                 parent = parent.setdefault(category.strip(), {})
 
         # Start recursion at the root of the dictionary
-        self.add_categories(channel, parent=None, children=category_tree, ancestors=channel_name)
+        self.add_categories(channel, parent=None, children=category_tree,
+                            ancestors=channel_name)

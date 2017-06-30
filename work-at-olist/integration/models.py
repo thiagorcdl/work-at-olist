@@ -15,9 +15,13 @@ class Channel(models.Model):
 
 
 class Category(models.Model):
-    """A self-referencing model that represents a product's category or subcategory"""
+    """
+    A self-referencing model that represents a product's
+    category or subcategory
+    """
     channel = models.ForeignKey(Channel)
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
+    parent = models.ForeignKey('self', null=True, blank=True,
+                               related_name='children')
     reference = models.SlugField(max_length=64, unique=True)
     name = models.CharField(max_length=64)
     delimiter = '_'
@@ -32,30 +36,45 @@ class Category(models.Model):
     def get_ancestors(reference, get_current=False):
         """
         Returns all ancestors of the given category.
-        Considering the way references are built (using double hifen to separate levels), all parent's are guaranteed
+        Considering the way references are built
+        (using underscore to separate levels), all parents are guaranteed
         to have a prefix of the current reference as their own.
         :param reference: <str> reference of a Category object
-        :param get_current: <bool> defines whether to retrieve the current Category as well or not
+        :param get_current: <bool> defines whether to retrieve
+                            the current Category as well or not
         :return: <Category> QuerySet
         """
-        references = reference.split(Category.delimiter)[:None if get_current else -1]
+        # Defines whether to leave out the current category or not
+        last = None if get_current else -1
+        references = reference.split(Category.delimiter)[:last]
 
+        # Iteratively builds the query by keeping the prefixes
         query = Q()
         while len(references) > 1:
             query |= Q(reference=Category.delimiter.join(references))
             references.pop()
 
-        return Category.objects.filter(query) if query else Category.objects.none()
+        if query:
+            return Category.objects.filter(query)
+
+        # Return nothing if there was no parent or given reference was invalid
+        return Category.objects.none()
 
     @staticmethod
     def get_descendants(reference, get_current=False):
         """
-        Returns all children of the given category and their respective children, recursively.
-        Considering the reference is the category path, all subcategories are guaranteed to have
-        this category's reference as a prefix to their own.
+        Returns all children of the given category and their respective
+        children, recursively.
+        Considering the reference is the category path, all subcategories are
+        guaranteed to have this category's reference as a prefix to their own.
         :param reference: <str> reference of a Category object
-        :param get_current: <bool> defines whether to retrieve the current Category as well or not
+        :param get_current: <bool> defines whether to retrieve the current
+                            Category as well or not
         :return: <Category> QuerySet
         """
         queryset = Category.objects.filter(reference__startswith=reference)
-        return queryset if get_current else queryset.exclude(reference=reference)
+        if get_current:
+            return queryset
+
+        # Exclude current category
+        return queryset.exclude(reference=reference)

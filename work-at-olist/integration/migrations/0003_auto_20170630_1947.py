@@ -3,11 +3,10 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import django.db.models.deletion
+from django.db.models.deletion import CASCADE
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('integration', '0002_auto_20170629_0645'),
     ]
@@ -28,8 +27,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='category',
             name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
-                                    related_name='children', to='integration.Category'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=CASCADE,
+                                    related_name='children',
+                                    to='integration.Category'),
         ),
         migrations.AlterField(
             model_name='channel',

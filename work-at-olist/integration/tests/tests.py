@@ -12,18 +12,20 @@ class ImportCategoriesTestCase(TestCase):
         Asserts the correct amount of created objects.
 
         Multiple kinds of tests are used:
-            running normally, repeating the same command, using a file with repeating rows and
-            using a file with categories in a random order
+            running normally, repeating the same command, using a file with
+            repeating rows and using a file with categories in a random order
         """
 
-        for channel, file in [('channel1', 'importcategories.csv'), ('channel1', 'importcategories.csv'),
+        for channel, file in [('channel1', 'importcategories.csv'),
+                              ('channel1', 'importcategories.csv'),
                               ('channel2', 'importcategories-repeated.csv'),
                               ('channel3', 'importcategories-unordered.csv')]:
             args = [channel, self.csv_dir + file]
             call_command('importcategories', *args)
 
             self.assertEquals(Channel.objects.filter(name=channel).count(), 1)
-            self.assertEquals(Category.objects.filter(channel__name=channel).count(), 23)
+            self.assertEquals(
+                Category.objects.filter(channel__name=channel).count(), 23)
             c = Category.objects.filter(name__contains='360').first()
             anc = c.get_ancestors(c.reference)
             self.assertEquals(anc.count(), 1)

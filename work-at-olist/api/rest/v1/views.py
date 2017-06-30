@@ -3,7 +3,8 @@ API views for Channel and Category models
 """
 from rest_framework import generics
 from integration.models import Channel, Category
-from .serializers import ChannelSerializer, CategorySerializer, SingleCategorySerializer
+from .serializers import ChannelSerializer, CategorySerializer, \
+    SingleCategorySerializer
 
 
 class ChannelListView(generics.ListCreateAPIView):
@@ -30,12 +31,16 @@ class CategoryView(generics.RetrieveAPIView):
 
 
 class RelatedCategoriesListView(generics.ListCreateAPIView):
-    """ListView which returns the given category and all of its ancestors and descendants"""
+    """
+    ListView which returns the given category and
+    all of its ancestors and descendants
+    """
     queryset = Category.objects.all()
     serializer_class = SingleCategorySerializer
 
     def get_queryset(self):
         channel_reference = self.kwargs.get('reference')
         ascendants = Category.get_ancestors(channel_reference)
-        descendants = Category.get_descendants(channel_reference, get_current=True)
+        descendants = Category.get_descendants(channel_reference,
+                                               get_current=True)
         return ascendants | descendants

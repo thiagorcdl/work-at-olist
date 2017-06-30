@@ -3,11 +3,10 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import django.db.models.deletion
+from django.db.models.deletion import CASCADE
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -17,39 +16,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=64)),
             ],
         ),
         migrations.CreateModel(
             name='Channel',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=64)),
             ],
         ),
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=64)),
             ],
         ),
         migrations.CreateModel(
             name='Seller',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=64)),
             ],
         ),
         migrations.AddField(
             model_name='category',
             name='channel',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='integration.Channel'),
+            field=models.ForeignKey(on_delete=CASCADE,
+                                    to='integration.Channel'),
         ),
         migrations.AddField(
             model_name='category',
             name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='integration.Category'),
+            field=models.ForeignKey(blank=True, null=True,
+                                    on_delete=CASCADE,
+                                    to='integration.Category'),
         ),
     ]
