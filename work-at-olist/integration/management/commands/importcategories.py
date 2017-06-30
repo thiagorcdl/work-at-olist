@@ -1,4 +1,6 @@
 from django.core.management.base import BaseCommand
+from django.utils.text import slugify
+
 from integration.models import Channel, Category
 import csv
 
@@ -6,21 +8,25 @@ import csv
 class Command(BaseCommand):
     help = 'Imports channel\'s categories from CSV file.'
 
-    def add_categories(self, channel, parent, children):
+    def add_categories(self, channel, parent, children, ancestors):
         """
         Recursive function responsible for creating new categories and setting their parent category.
 
         :param channel: <integration.models.Channel> object
         :param parent: <integration.models.Category> object
         :param children: <dict> of category names (<dicts>)
+        :param ancestors: <str> of parent category names
         :return:
         """
+        delimiter = Category.delimiter
         for category_name in children:
-            category = Category.objects.create(channel=channel, parent=parent, name=category_name)
+            references = delimiter.join([ancestors, category_name])
+            category = Category.objects.create(channel=channel, parent=parent,
+                                               reference=slugify(references), name=category_name)
             print(u'# Creating category %s' % category_name)
 
             # Call recursion using current category as parent
-            self.add_categories(channel, parent=category, children=children[category_name])
+            self.add_categories(channel, parent=category, children=children[category_name], ancestors=references)
 
     def add_arguments(self, parser):
         """Specifies the command parameters"""
@@ -33,7 +39,7 @@ class Command(BaseCommand):
 
         # Get or create given channel
         channel_name = kwargs.get('channel')
-        channel, created = Channel.objects.get_or_create(name=channel_name)
+        channel, created = Channel.objects.get_or_create(name=channel_name, reference=slugify(channel_name))
         if created:
             print(u'# Creating new channel "%s"' % channel_name)
         else:
@@ -58,4 +64,4 @@ class Command(BaseCommand):
                 parent = parent.setdefault(category.strip(), {})
 
         # Start recursion at the root of the dictionary
-        self.add_categories(channel, None, category_tree)
+        self.add_categories(channel, parent=None, children=category_tree, ancestors=channel_name)
