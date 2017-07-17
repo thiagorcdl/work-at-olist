@@ -3,6 +3,6 @@
 """
 from .base import *
 
-INSTALLED_APPS.extends([
+INSTALLED_APPS.extend([
     'django_extensions',
 ])
