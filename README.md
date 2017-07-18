@@ -81,6 +81,7 @@ interface and using GitHub integration.
 - Fork this repository using your GitHub account.
 - Go to Heroku dashboard and create a new app on the upper-right corner menu.
 - Configure the environment variables under the *Settings* tab:
+    - SECRET_KEY='RANDOMLY-GENERATED-LARGE-STRING'
     - DJANGO_SETTINGS_MODULE=settings.production
     - DISABLE_COLLECTSTATIC=1
 - Set up the project integration under the *Deploy* tab. 
