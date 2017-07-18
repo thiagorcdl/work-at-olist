@@ -1,12 +1,18 @@
+import csv
+
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
-from integration.models import Channel, Category
-import csv
+from integration.models import Category, Channel
 
 
 class Command(BaseCommand):
     help = 'Imports channel\'s categories from CSV file.'
+
+    def log_msg(self, msg):
+        if settings.DEBUG:
+            print(msg)
 
     def add_categories(self, channel, parent, children, ancestors):
         """
@@ -25,7 +31,7 @@ class Command(BaseCommand):
             category = Category.objects.create(channel=channel, parent=parent,
                                                reference=slugify(references),
                                                name=category_name)
-            print(u'# Creating category %s' % category_name)
+            self.log_msg(u'# Creating category %s' % category_name)
 
             # Call recursion using current category as parent
             self.add_categories(channel, parent=category,
@@ -47,10 +53,10 @@ class Command(BaseCommand):
         channel, created = Channel.objects.get_or_create(name=channel_name,
                                                          reference=slug)
         if created:
-            print(u'# Creating new channel "%s"' % channel_name)
+            self.log_msg(u'# Creating new channel "%s"' % channel_name)
         else:
-            print(u'# Performing full update on all of '
-                  u'%s\'s categories' % channel_name)
+            self.log_msg(u'# Performing full update on all of '
+                         u'%s\'s categories' % channel_name)
             Category.objects.filter(channel=channel).delete()
 
         # Open CSV file as dictionary
