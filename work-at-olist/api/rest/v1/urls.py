@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from .views import ChannelListView, ChannelCategoryListView, \
-    RelatedCategoriesListView, CategoryView
+from .views import CategoryView, ChannelCategoryListView, ChannelListView, \
+    RelatedCategoriesListView
 
 urlpatterns = [
     url(r'^channels/$', ChannelListView.as_view(), name='channels'),

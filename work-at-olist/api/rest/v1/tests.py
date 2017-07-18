@@ -1,7 +1,12 @@
+"""
+Test cases for each endpoint
+"""
+
 import json
+
 from django.core.management import call_command
-from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
+from rest_framework.test import APITestCase
 
 
 class IntegrationAPITestCase(APITestCase):

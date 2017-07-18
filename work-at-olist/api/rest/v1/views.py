@@ -2,18 +2,19 @@
 API views for Channel and Category models
 """
 from rest_framework import generics
-from integration.models import Channel, Category
-from .serializers import ChannelSerializer, CategorySerializer, \
+
+from integration.models import Category, Channel
+from .serializers import CategorySerializer, ChannelSerializer, \
     SingleCategorySerializer
 
 
-class ChannelListView(generics.ListCreateAPIView):
+class ChannelListView(generics.ListAPIView):
     """A simple ListView that returns all existing channels"""
     queryset = Channel.objects.all()
     serializer_class = ChannelSerializer
 
 
-class ChannelCategoryListView(generics.ListCreateAPIView):
+class ChannelCategoryListView(generics.ListAPIView):
     """ListView which returns every Category for a given Channel"""
     queryset = Category.objects.all()
     serializer_class = SingleCategorySerializer
@@ -24,7 +25,10 @@ class ChannelCategoryListView(generics.ListCreateAPIView):
 
 
 class CategoryView(generics.RetrieveAPIView):
-    """DetailView which returns a single"""
+    """
+    DetailView which returns a single Category with
+    its parent and children categories (directly related)
+    """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     lookup_field = 'reference'

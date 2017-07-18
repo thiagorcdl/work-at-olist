@@ -2,7 +2,8 @@
 Serializers for Channel and Category models
 """
 from rest_framework import serializers
-from integration.models import Channel, Category
+
+from integration.models import Category, Channel
 
 
 class ChannelSerializer(serializers.ModelSerializer):
