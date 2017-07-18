@@ -13,7 +13,7 @@
 
 This code refers to my implementation of the 
 [challenge](https://github.com/olist/work-at-olist) specified by 
-[Olist](https:github.com/olist/) for the Python Developer position. 
+[Olist](https://github.com/olist/) for the Python Developer position. 
 It is a Django project designed to import a CSV file and retrieve stored data 
 via REST API. 
 
