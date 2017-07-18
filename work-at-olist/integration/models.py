@@ -4,8 +4,11 @@ from django.db.models import Q
 
 class Channel(models.Model):
     """The media where products are published"""
-    reference = models.SlugField(max_length=64, unique=True)
+    reference = models.SlugField(db_index=True, max_length=64, unique=True)
     name = models.CharField(max_length=64, unique=True)
+
+    class Meta:
+        index_together = ('reference',)
 
     def __unicode__(self):
         return self.name
@@ -22,9 +25,12 @@ class Category(models.Model):
     channel = models.ForeignKey(Channel)
     parent = models.ForeignKey('self', null=True, blank=True,
                                related_name='children')
-    reference = models.SlugField(max_length=64, unique=True)
+    reference = models.SlugField(db_index=True, max_length=64, unique=True)
     name = models.CharField(max_length=64)
     delimiter = '_'
+
+    class Meta:
+        index_together = ('reference',)
 
     def __unicode__(self):
         return u'(%s) %s' % (self.channel, self.name)
